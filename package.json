@@ -1,0 +1,19 @@
+{
+  "name": "thl-back",
+  "version": "1.0.0",
+  "description": "Team Hearth Legends Node.js Express / GraphQL server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rgstaub/thl-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rgstaub/thl-back/issues"
+  },
+  "homepage": "https://github.com/Rgstaub/thl-back#readme"
+}
