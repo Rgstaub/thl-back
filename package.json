@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Rgstaub/thl-back/issues"
   },
-  "homepage": "https://github.com/Rgstaub/thl-back#readme"
+  "homepage": "https://github.com/Rgstaub/thl-back#readme",
+  "dependencies": {
+    "dotenv": "^6.2.0"
+  }
 }
