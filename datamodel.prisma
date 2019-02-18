@@ -2,5 +2,15 @@ type User {
   id: ID! @unique
   name: String! @unique
   email: String! @unique
-  bnetId: String! @unique
+  series: [Series]
+}
+
+type Series {
+  id: ID! @unique
+  name: String!
+  description: String
+  currentSeason: String
+  previousSeasons: [String]
+  logoLarge: String
+  logoSmall: String
 }

@@ -1,5 +1,9 @@
 # source: https://us1.prisma.sh/richard-staub/thldemodb/dev
-# timestamp: Sat Feb 16 2019 22:20:24 GMT-0500 (Eastern Standard Time)
+# timestamp: Sun Feb 17 2019 20:53:27 GMT-0500 (Eastern Standard Time)
+
+type AggregateSeries {
+  count: Int!
+}
 
 type AggregateUser {
   count: Int!
@@ -18,11 +22,17 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createSeries(data: SeriesCreateInput!): Series!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateSeries(data: SeriesUpdateInput!, where: SeriesWhereUniqueInput!): Series
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteSeries(where: SeriesWhereUniqueInput!): Series
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertSeries(where: SeriesWhereUniqueInput!, create: SeriesCreateInput!, update: SeriesUpdateInput!): Series!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManySerieses(data: SeriesUpdateManyMutationInput!, where: SeriesWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManySerieses(where: SeriesWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -54,8 +64,11 @@ type PageInfo {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  serieses(where: SeriesWhereInput, orderBy: SeriesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Series]!
   user(where: UserWhereUniqueInput!): User
+  series(where: SeriesWhereUniqueInput!): Series
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  seriesesConnection(where: SeriesWhereInput, orderBy: SeriesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SeriesConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -64,15 +77,705 @@ type Query {
   ): Node
 }
 
+type Series implements Node {
+  id: ID!
+  name: String!
+  description: String
+  currentSeason: String
+  previousSeasons: [String!]!
+  logoLarge: String
+  logoSmall: String
+}
+
+"""A connection to a list of items."""
+type SeriesConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SeriesEdge]!
+  aggregate: AggregateSeries!
+}
+
+input SeriesCreateInput {
+  name: String!
+  description: String
+  currentSeason: String
+  logoLarge: String
+  logoSmall: String
+  previousSeasons: SeriesCreatepreviousSeasonsInput
+}
+
+input SeriesCreateManyInput {
+  create: [SeriesCreateInput!]
+  connect: [SeriesWhereUniqueInput!]
+}
+
+input SeriesCreatepreviousSeasonsInput {
+  set: [String!]
+}
+
+"""An edge in a connection."""
+type SeriesEdge {
+  """The item at the end of the edge."""
+  node: Series!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum SeriesOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+  currentSeason_ASC
+  currentSeason_DESC
+  logoLarge_ASC
+  logoLarge_DESC
+  logoSmall_ASC
+  logoSmall_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type SeriesPreviousValues {
+  id: ID!
+  name: String!
+  description: String
+  currentSeason: String
+  previousSeasons: [String!]!
+  logoLarge: String
+  logoSmall: String
+}
+
+input SeriesScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SeriesScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SeriesScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SeriesScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  currentSeason: String
+
+  """All values that are not equal to given value."""
+  currentSeason_not: String
+
+  """All values that are contained in given list."""
+  currentSeason_in: [String!]
+
+  """All values that are not contained in given list."""
+  currentSeason_not_in: [String!]
+
+  """All values less than the given value."""
+  currentSeason_lt: String
+
+  """All values less than or equal the given value."""
+  currentSeason_lte: String
+
+  """All values greater than the given value."""
+  currentSeason_gt: String
+
+  """All values greater than or equal the given value."""
+  currentSeason_gte: String
+
+  """All values containing the given string."""
+  currentSeason_contains: String
+
+  """All values not containing the given string."""
+  currentSeason_not_contains: String
+
+  """All values starting with the given string."""
+  currentSeason_starts_with: String
+
+  """All values not starting with the given string."""
+  currentSeason_not_starts_with: String
+
+  """All values ending with the given string."""
+  currentSeason_ends_with: String
+
+  """All values not ending with the given string."""
+  currentSeason_not_ends_with: String
+  logoLarge: String
+
+  """All values that are not equal to given value."""
+  logoLarge_not: String
+
+  """All values that are contained in given list."""
+  logoLarge_in: [String!]
+
+  """All values that are not contained in given list."""
+  logoLarge_not_in: [String!]
+
+  """All values less than the given value."""
+  logoLarge_lt: String
+
+  """All values less than or equal the given value."""
+  logoLarge_lte: String
+
+  """All values greater than the given value."""
+  logoLarge_gt: String
+
+  """All values greater than or equal the given value."""
+  logoLarge_gte: String
+
+  """All values containing the given string."""
+  logoLarge_contains: String
+
+  """All values not containing the given string."""
+  logoLarge_not_contains: String
+
+  """All values starting with the given string."""
+  logoLarge_starts_with: String
+
+  """All values not starting with the given string."""
+  logoLarge_not_starts_with: String
+
+  """All values ending with the given string."""
+  logoLarge_ends_with: String
+
+  """All values not ending with the given string."""
+  logoLarge_not_ends_with: String
+  logoSmall: String
+
+  """All values that are not equal to given value."""
+  logoSmall_not: String
+
+  """All values that are contained in given list."""
+  logoSmall_in: [String!]
+
+  """All values that are not contained in given list."""
+  logoSmall_not_in: [String!]
+
+  """All values less than the given value."""
+  logoSmall_lt: String
+
+  """All values less than or equal the given value."""
+  logoSmall_lte: String
+
+  """All values greater than the given value."""
+  logoSmall_gt: String
+
+  """All values greater than or equal the given value."""
+  logoSmall_gte: String
+
+  """All values containing the given string."""
+  logoSmall_contains: String
+
+  """All values not containing the given string."""
+  logoSmall_not_contains: String
+
+  """All values starting with the given string."""
+  logoSmall_starts_with: String
+
+  """All values not starting with the given string."""
+  logoSmall_not_starts_with: String
+
+  """All values ending with the given string."""
+  logoSmall_ends_with: String
+
+  """All values not ending with the given string."""
+  logoSmall_not_ends_with: String
+}
+
+type SeriesSubscriptionPayload {
+  mutation: MutationType!
+  node: Series
+  updatedFields: [String!]
+  previousValues: SeriesPreviousValues
+}
+
+input SeriesSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SeriesSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SeriesSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SeriesSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: SeriesWhereInput
+}
+
+input SeriesUpdateDataInput {
+  name: String
+  description: String
+  currentSeason: String
+  logoLarge: String
+  logoSmall: String
+  previousSeasons: SeriesUpdatepreviousSeasonsInput
+}
+
+input SeriesUpdateInput {
+  name: String
+  description: String
+  currentSeason: String
+  logoLarge: String
+  logoSmall: String
+  previousSeasons: SeriesUpdatepreviousSeasonsInput
+}
+
+input SeriesUpdateManyDataInput {
+  name: String
+  description: String
+  currentSeason: String
+  logoLarge: String
+  logoSmall: String
+  previousSeasons: SeriesUpdatepreviousSeasonsInput
+}
+
+input SeriesUpdateManyInput {
+  create: [SeriesCreateInput!]
+  connect: [SeriesWhereUniqueInput!]
+  set: [SeriesWhereUniqueInput!]
+  disconnect: [SeriesWhereUniqueInput!]
+  delete: [SeriesWhereUniqueInput!]
+  update: [SeriesUpdateWithWhereUniqueNestedInput!]
+  updateMany: [SeriesUpdateManyWithWhereNestedInput!]
+  deleteMany: [SeriesScalarWhereInput!]
+  upsert: [SeriesUpsertWithWhereUniqueNestedInput!]
+}
+
+input SeriesUpdateManyMutationInput {
+  name: String
+  description: String
+  currentSeason: String
+  logoLarge: String
+  logoSmall: String
+  previousSeasons: SeriesUpdatepreviousSeasonsInput
+}
+
+input SeriesUpdateManyWithWhereNestedInput {
+  where: SeriesScalarWhereInput!
+  data: SeriesUpdateManyDataInput!
+}
+
+input SeriesUpdatepreviousSeasonsInput {
+  set: [String!]
+}
+
+input SeriesUpdateWithWhereUniqueNestedInput {
+  where: SeriesWhereUniqueInput!
+  data: SeriesUpdateDataInput!
+}
+
+input SeriesUpsertWithWhereUniqueNestedInput {
+  where: SeriesWhereUniqueInput!
+  update: SeriesUpdateDataInput!
+  create: SeriesCreateInput!
+}
+
+input SeriesWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SeriesWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SeriesWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SeriesWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  currentSeason: String
+
+  """All values that are not equal to given value."""
+  currentSeason_not: String
+
+  """All values that are contained in given list."""
+  currentSeason_in: [String!]
+
+  """All values that are not contained in given list."""
+  currentSeason_not_in: [String!]
+
+  """All values less than the given value."""
+  currentSeason_lt: String
+
+  """All values less than or equal the given value."""
+  currentSeason_lte: String
+
+  """All values greater than the given value."""
+  currentSeason_gt: String
+
+  """All values greater than or equal the given value."""
+  currentSeason_gte: String
+
+  """All values containing the given string."""
+  currentSeason_contains: String
+
+  """All values not containing the given string."""
+  currentSeason_not_contains: String
+
+  """All values starting with the given string."""
+  currentSeason_starts_with: String
+
+  """All values not starting with the given string."""
+  currentSeason_not_starts_with: String
+
+  """All values ending with the given string."""
+  currentSeason_ends_with: String
+
+  """All values not ending with the given string."""
+  currentSeason_not_ends_with: String
+  logoLarge: String
+
+  """All values that are not equal to given value."""
+  logoLarge_not: String
+
+  """All values that are contained in given list."""
+  logoLarge_in: [String!]
+
+  """All values that are not contained in given list."""
+  logoLarge_not_in: [String!]
+
+  """All values less than the given value."""
+  logoLarge_lt: String
+
+  """All values less than or equal the given value."""
+  logoLarge_lte: String
+
+  """All values greater than the given value."""
+  logoLarge_gt: String
+
+  """All values greater than or equal the given value."""
+  logoLarge_gte: String
+
+  """All values containing the given string."""
+  logoLarge_contains: String
+
+  """All values not containing the given string."""
+  logoLarge_not_contains: String
+
+  """All values starting with the given string."""
+  logoLarge_starts_with: String
+
+  """All values not starting with the given string."""
+  logoLarge_not_starts_with: String
+
+  """All values ending with the given string."""
+  logoLarge_ends_with: String
+
+  """All values not ending with the given string."""
+  logoLarge_not_ends_with: String
+  logoSmall: String
+
+  """All values that are not equal to given value."""
+  logoSmall_not: String
+
+  """All values that are contained in given list."""
+  logoSmall_in: [String!]
+
+  """All values that are not contained in given list."""
+  logoSmall_not_in: [String!]
+
+  """All values less than the given value."""
+  logoSmall_lt: String
+
+  """All values less than or equal the given value."""
+  logoSmall_lte: String
+
+  """All values greater than the given value."""
+  logoSmall_gt: String
+
+  """All values greater than or equal the given value."""
+  logoSmall_gte: String
+
+  """All values containing the given string."""
+  logoSmall_contains: String
+
+  """All values not containing the given string."""
+  logoSmall_not_contains: String
+
+  """All values starting with the given string."""
+  logoSmall_starts_with: String
+
+  """All values not starting with the given string."""
+  logoSmall_not_starts_with: String
+
+  """All values ending with the given string."""
+  logoSmall_ends_with: String
+
+  """All values not ending with the given string."""
+  logoSmall_not_ends_with: String
+}
+
+input SeriesWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  series(where: SeriesSubscriptionWhereInput): SeriesSubscriptionPayload
 }
 
 type User implements Node {
   id: ID!
   name: String!
   email: String!
-  bnetId: String!
+  series(where: SeriesWhereInput, orderBy: SeriesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Series!]
 }
 
 """A connection to a list of items."""
@@ -88,7 +791,7 @@ type UserConnection {
 input UserCreateInput {
   name: String!
   email: String!
-  bnetId: String!
+  series: SeriesCreateManyInput
 }
 
 """An edge in a connection."""
@@ -107,8 +810,6 @@ enum UserOrderByInput {
   name_DESC
   email_ASC
   email_DESC
-  bnetId_ASC
-  bnetId_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -119,7 +820,6 @@ type UserPreviousValues {
   id: ID!
   name: String!
   email: String!
-  bnetId: String!
 }
 
 type UserSubscriptionPayload {
@@ -164,13 +864,12 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   name: String
   email: String
-  bnetId: String
+  series: SeriesUpdateManyInput
 }
 
 input UserUpdateManyMutationInput {
   name: String
   email: String
-  bnetId: String
 }
 
 input UserWhereInput {
@@ -302,51 +1001,13 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
-  bnetId: String
-
-  """All values that are not equal to given value."""
-  bnetId_not: String
-
-  """All values that are contained in given list."""
-  bnetId_in: [String!]
-
-  """All values that are not contained in given list."""
-  bnetId_not_in: [String!]
-
-  """All values less than the given value."""
-  bnetId_lt: String
-
-  """All values less than or equal the given value."""
-  bnetId_lte: String
-
-  """All values greater than the given value."""
-  bnetId_gt: String
-
-  """All values greater than or equal the given value."""
-  bnetId_gte: String
-
-  """All values containing the given string."""
-  bnetId_contains: String
-
-  """All values not containing the given string."""
-  bnetId_not_contains: String
-
-  """All values starting with the given string."""
-  bnetId_starts_with: String
-
-  """All values not starting with the given string."""
-  bnetId_not_starts_with: String
-
-  """All values ending with the given string."""
-  bnetId_ends_with: String
-
-  """All values not ending with the given string."""
-  bnetId_not_ends_with: String
+  series_every: SeriesWhereInput
+  series_some: SeriesWhereInput
+  series_none: SeriesWhereInput
 }
 
 input UserWhereUniqueInput {
   id: ID
   name: String
   email: String
-  bnetId: String
 }

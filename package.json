@@ -4,7 +4,9 @@
   "description": "Team Hearth Legends Node.js Express / GraphQL server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -e js,graphql -x node src/index.js",
+    "debug": "nodemon -e js,graphql -x node --inspect src/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,13 @@
   },
   "homepage": "https://github.com/Rgstaub/thl-back#readme",
   "dependencies": {
-    "dotenv": "^6.2.0"
+    "dotenv": "^6.2.0",
+    "graphql-yoga": "^1.17.4",
+    "prisma-binding": "^2.3.2"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
   }
 }

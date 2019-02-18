@@ -1,0 +1,23 @@
+# import * from './generated/prisma.graphql'
+
+type User {
+  name: String!
+  email: String!
+}
+
+type Mutation {
+  createUser(name: String!, email: String!): User
+  createSeries(
+    name: String!
+    description: String
+    currentSeason: String
+    logoLarge: String
+    logoSmall: String
+    previousSeasons: SeriesCreatepreviousSeasonsInput
+  ): Series
+}
+
+type Query {
+  users: [User]!
+  serieses: [Series]!
+}
